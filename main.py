@@ -8,15 +8,21 @@ logging.basicConfig(level=logging.INFO)
 
 DELIVERABLES_DIR = "./deliverables"
 
+RUN_DURATION_SECONDS = 300
+CSV_OUTPUT_PATH = "results/output.csv"
+
+TEST_DURATION_SECONDS = 1
+CSV_TEST_PATH = "config/test.csv"
+
 def main_run(filepath: str):
-    res = subprocess.run([sys.executable, filepath, "config/run_config.yaml", "results/output.csv"],
+    res = subprocess.run([sys.executable, filepath, str(RUN_DURATION_SECONDS), CSV_OUTPUT_PATH],
                           capture_output=True, text=True)
     return res
 
 def test_run(filepath: str) -> Tuple[bool, int]:
     # Test 1: Verify file doesn't overwrite the CSV file
     orig_len = len(open("config/test.csv").readlines())
-    subprocess.run([sys.executable, filepath, "config/test_config.yaml", "config/test.csv"])
+    subprocess.run([sys.executable, filepath, str(TEST_DURATION_SECONDS), CSV_TEST_PATH])
     new_len = len(open("config/test.csv").readlines())
 
     if new_len != orig_len + 1:
@@ -32,9 +38,11 @@ def test_run(filepath: str) -> Tuple[bool, int]:
         except ValueError:
             return False, 2
 
+    # Reset test file
+    with open ("config/test.csv", "w") as f:
+        f.writelines("name, score\n")
+
     return True, 0
-
-
 
 for filename in os.listdir(DELIVERABLES_DIR):
     if filename.endswith('.py'):
