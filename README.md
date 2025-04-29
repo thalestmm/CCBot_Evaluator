@@ -22,3 +22,7 @@ The results will be available in the `results/output.csv` file.
 ```bash
 python main.py
 ```
+
+## Analysis (TODO)
+
+Sort all values from the `.csv` file and display the winners.
