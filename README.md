@@ -3,6 +3,8 @@
 ## Installation
 
 ```bash
+gh repo clone thalestmm/CCBot_Evaluator
+cd CCBot_Evaluator
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
